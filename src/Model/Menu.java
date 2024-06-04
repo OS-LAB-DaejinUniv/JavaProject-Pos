@@ -4,7 +4,9 @@ Coffee, Non-Coffee(Ade,Tea,Latte),Signature, Cake
  */
 package Model;
 
-public abstract class Menu {
+import java.util.ArrayList;
+
+public abstract class Menu implements AllMenu {
     private String name;
     private int price;
 
@@ -13,13 +15,15 @@ public abstract class Menu {
         this.price = price;
     }
 
+    @Override
     public String getName(){return name;}
 
+    @Override
     public int getPrice(){return price;}
 
     @Override
-    public String toString(){
-        return name + "" + price + "원";
+    public void putMenu(){
+
     }
 
 }
