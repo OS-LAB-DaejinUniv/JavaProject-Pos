@@ -3,6 +3,8 @@ package View;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+
+import Controller.Calc;
 import Controller.Login;
 import Model.Coffee;
 import Model.NonCoffee.Ade;
@@ -44,6 +46,7 @@ public class Main{
                     "2.Non-Coffee\n" +
                     "3.Signature\n" +
                     "4.Cake\n" +
+                    "5.Calc\n" +
                     "Choice => ");
             String num = sc.nextLine();
             switch (num) {
@@ -122,6 +125,12 @@ public class Main{
                     }
 
                 }
+                case "Calc" -> {
+                    Calc calc = new Calc();
+                    calc.totalPrice();
+
+                }
+
                 case "logout" -> System.exit(0);
             }
         }
