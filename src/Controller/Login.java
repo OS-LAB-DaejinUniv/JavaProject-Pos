@@ -2,14 +2,15 @@ package Controller;
 import java.util.Scanner;
 
 public class Login {
+    String ID;
+    String Password;
 
     public Login(){
 
     }
 
     public void login(){
-        String ID;
-        String Password;
+
 
         Scanner sc = new Scanner(System.in);
         System.out.println("로그인을 하세요");
