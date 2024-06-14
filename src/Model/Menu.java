@@ -14,12 +14,11 @@ public abstract class Menu implements AllMenu {
         this.name = name;
         this.price = price;
     }
-
     @Override
-    public String getName(){return name;}
+    public String[][] getMenus(){
 
-    @Override
-    public int getPrice(){return price;}
+        return new String[0][1];
+    }
 
     @Override
     public void putMenu(){

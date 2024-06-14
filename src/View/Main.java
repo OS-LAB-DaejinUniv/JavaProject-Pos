@@ -1,10 +1,10 @@
 package View;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import Controller.Calc;
+import Controller.Cart;
 import Controller.Login;
 import Model.Coffee;
 import Model.NonCoffee.Ade;
@@ -12,6 +12,7 @@ import Model.Menu;
 import Model.NonCoffee.Latte;
 import Model.NonCoffee.Tea;
 import Model.Signature;
+import Model.Cake;
 
 public class Main {
 
@@ -41,12 +42,14 @@ public class Main {
 
         Signature signature = new Signature("Signature", 0);
 
+        Cake cake = new Cake("Cake", 0);
+
         System.out.println("안녕하세요 예원하다입니다");
         Login login = new Login(); // 로그인 객체
         login.login();
 
-        // 선택된 모든 메뉴를 저장할 리스트
-        ArrayList<String[]> allSelectedMenus = new ArrayList<>();
+        ArrayList<String[]> allSelectedMenus = new ArrayList<>(); // 선택된 모든 메뉴 가격을 저장할 리스트
+        ArrayList<String[]> allMenusName = new ArrayList<>(); // 선택된 모든 메뉴 이름을 저장할 리스트
 
         while (true) {
             System.out.print("\n기능 선택\n" +
@@ -54,7 +57,8 @@ public class Main {
                     "2.Non-Coffee\n" +
                     "3.Signature\n" +
                     "4.Cake\n" +
-                    "5.Calc\n" +
+                    "5.Cart\n" +
+                    "6.Calc\n" +
                     "Choice => ");
             String num = sc.nextLine();
             switch (num) {
@@ -79,6 +83,7 @@ public class Main {
                                 if (index > 0 && index <= menus.length) {
                                     selectMenus.add(menus[index - 1][0]); // 리스트에 선택된 메뉴 추가
                                     allSelectedMenus.add(menus[index - 1]); // 선택된 메뉴와 가격을 모두 저장
+                                    allMenusName.add(menus[index - 1]); // 선택된 메뉴와 이름을 모두 저장
                                 }
                             } catch (NumberFormatException e) {
                                 System.out.println("입력 방식이 잘못되었습니다.");
@@ -117,6 +122,7 @@ public class Main {
                                 if (index > 0 && index <= allMenus.size()) {
                                     selectMenus.add(allMenus.get(index - 1)[0]); // 리스트에 선택된 메뉴 추가
                                     allSelectedMenus.add(allMenus.get(index - 1)); // 선택된 메뉴와 가격을 모두 저장
+                                    allMenusName.add(allMenus.get(index - 1)); // 선택된 메뉴와 이름을 모두 저장
                                 }
                             } catch (NumberFormatException e) {
                                 System.out.println("입력 방식이 잘못되었습니다.");
@@ -139,7 +145,7 @@ public class Main {
                     for (int i = 0; i < menus.length; i++) {
                         System.out.println((i + 1) + "." + menus[i][0] + " " + menus[i][1]);
                     }
-                    System.out.println("0.선택 완료");
+                    System.out.println("0.나가기");
                     System.out.print("Choice-->");
                     String input = sc.nextLine();
 
@@ -151,6 +157,7 @@ public class Main {
                                 if (index > 0 && index <= menus.length) {
                                     selectMenus.add(menus[index - 1][0]);
                                     allSelectedMenus.add(menus[index - 1]); // 선택된 메뉴와 가격을 모두 저장
+                                    allMenusName.add(menus[index - 1]); // 선택된 메뉴와 이름을 모두 저장
                                 }
                             } catch (NumberFormatException e) {
                                 System.out.println("입력 방식이 잘못되었습니다.");
@@ -161,12 +168,45 @@ public class Main {
                     for (String menu : selectMenus) {
                         System.out.println(menu);
                     }
-
                 }
                 case "4" -> {
-                    // 케이크 메뉴 처리
+                    System.out.println("--Cake--");
+                    cake.putMenu();
+                    String[][] menus = cake.getMenus();
+                    ArrayList<String> selectMenus = new ArrayList<>();
+
+                    for (int i = 0; i < menus.length; i++) {
+                        System.out.println((i + 1) + "." + menus[i][0] + " " + menus[i][1]);
+                    }
+                    System.out.println("0.나가기");
+                    System.out.print("Choice-->");
+                    String input = sc.nextLine();
+
+                    if (!input.equals("0")) {
+                        String[] choices = input.split(",");
+                        for (String choice : choices) {
+                            try {
+                                int index = Integer.parseInt(choice.trim());
+                                if (index > 0 && index <= menus.length) {
+                                    selectMenus.add(menus[index - 1][0]);
+                                    allSelectedMenus.add(menus[index - 1]);
+                                    allMenusName.add(menus[index - 1]); // 선택된 메뉴와 이름을 모두 저장
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println("입력 방식이 잘 못 되었습니다.");
+                            }
+                        }
+                    }
+                    System.out.println("선택된 메뉴");
+                    for (String menu : selectMenus) {
+                        System.out.println(menu);
+                    }
                 }
                 case "5" -> {
+                    Cart cart = new Cart();
+                    cart.showMenu(allMenusName);
+                }
+                case "6" -> {
                     Calc calc = new Calc();
                     calc.totalPrice(allSelectedMenus);
                 }
