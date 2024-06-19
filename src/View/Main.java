@@ -55,16 +55,18 @@ public class Main {
         ArrayList<String[]> allMenusName = new ArrayList<>(); // 선택된 모든 메뉴 이름을 저장할 리스트
 
         while (true) {
-            System.out.print("\n기능 선택\n" +
-                    "1.Coffee\n" +
-                    "2.Non-Coffee\n" +
-                    "3.Signature\n" +
-                    "4.Cake\n" +
-                    "5.Cart\n" +
-                    "6.Calc\n" +
-                    "7.Generate Coupon\n" +
-                    "logout\n" +
-                    "Choice => ");
+            System.out.print("""
+
+                    기능 선택
+                    1.Coffee
+                    2.Non-Coffee
+                    3.Signature
+                    4.Cake
+                    5.Cart
+                    6.Calc
+                    7.Generate Coupon
+                    logout
+                    Choice =>\s""");
             String num = sc.nextLine();
             switch (num) {
                 case "1" -> {
