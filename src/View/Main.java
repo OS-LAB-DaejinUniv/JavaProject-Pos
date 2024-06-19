@@ -2,9 +2,12 @@ package View;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.IOException;
+import java.util.Set;
 
 import Controller.Calc;
 import Controller.Cart;
+import Controller.Coupon;
 import Controller.Login;
 import Model.Coffee;
 import Model.NonCoffee.Ade;
@@ -59,6 +62,8 @@ public class Main {
                     "4.Cake\n" +
                     "5.Cart\n" +
                     "6.Calc\n" +
+                    "7.Generate Coupon\n" +
+                    "logout\n" +
                     "Choice => ");
             String num = sc.nextLine();
             switch (num) {
@@ -205,12 +210,49 @@ public class Main {
                 case "5" -> {
                     Cart cart = new Cart();
                     cart.showMenu(allMenusName);
+                    System.out.print("계산하시겠어요? (Yes/No): ");
+                    String confirm = sc.nextLine();
+                    if (confirm.equalsIgnoreCase("Yes")) {
+                        Calc calc = new Calc();
+                        double totalPrice = calc.totalPrice(allSelectedMenus);
+
+                        System.out.print("쿠폰을 사용하시겠습니까? (Yes/No): ");
+                        String useCoupon = sc.nextLine();
+                        if (useCoupon.equalsIgnoreCase("Yes")) {
+                            System.out.print("쿠폰 번호를 입력하세요: ");
+                            String coupon = sc.nextLine();
+                            try {
+                                Set<String> coupons = Coupon.loadCoupons();
+                                if (coupons.contains(coupon)) {
+                                    totalPrice = (int) (totalPrice * 0.9); // 10% 할인
+                                    Coupon.deleteCoupon(coupon);
+                                    System.out.println("쿠폰이 적용되었습니다.");
+                                } else {
+                                    System.out.println("유효하지 않은 쿠폰 번호입니다.");
+                                }
+                            } catch (IOException e) {
+                                System.out.println("쿠폰 파일을 읽는 중 오류가 발생했습니다.");
+                            }
+                        }
+
+                        System.out.println("총 금액: " + totalPrice + "원");
+                        allSelectedMenus.clear();
+                        allMenusName.clear();
+                    }
                 }
                 case "6" -> {
                     Calc calc = new Calc();
                     calc.totalPrice(allSelectedMenus);
                 }
-
+                case "7" -> {
+                    String coupon = Coupon.generateCoupon();
+                    try {
+                        Coupon.saveCoupon(coupon);
+                        System.out.println("생성된 쿠폰 번호: " + coupon);
+                    } catch (IOException e) {
+                        System.out.println("쿠폰 번호를 저장하는 중 오류가 발생했습니다.");
+                    }
+                }
                 case "logout" -> System.exit(0);
             }
         }

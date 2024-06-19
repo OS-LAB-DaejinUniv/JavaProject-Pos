@@ -1,19 +1,27 @@
 package Controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Cart {
-
-    //선택된 메뉴들의 이름을 추출하고 보여주는 메소드
-    public void showMenu(ArrayList<String[]> showMenus){
-        StringBuilder menuName = new StringBuilder();
-
-        for(String[] menu : showMenus){
-            menuName.append(menu[0]).append(",");
+    public void showMenu(ArrayList<String[]> allMenusName) {
+        if (allMenusName.isEmpty()) {
+            System.out.println("장바구니가 비었습니다.");
+            return;
         }
-        if(!menuName.isEmpty()){
-            menuName.setLength(menuName.length()-2);
+
+        // Create a map to count occurrences of each menu item
+        Map<String, Integer> menuCount = new HashMap<>();
+        for (String[] menu : allMenusName) {
+            String menuName = menu[0];
+            menuCount.put(menuName, menuCount.getOrDefault(menuName, 0) + 1);
         }
-        System.out.println("주문 내역 :" + menuName.toString());
+
+        // Display the counted menu items
+        System.out.println("주문 내역:");
+        for (Map.Entry<String, Integer> entry : menuCount.entrySet()) {
+            System.out.println("- " + entry.getKey() + " " + entry.getValue());
+        }
     }
 }
